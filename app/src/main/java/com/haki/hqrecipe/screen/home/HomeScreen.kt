@@ -25,6 +25,7 @@ import com.haki.hqrecipe.data.ResultState
 import com.haki.hqrecipe.di.Injection
 import com.haki.hqrecipe.model.RecipeModel
 import com.haki.hqrecipe.ui.theme.genBg
+import com.haki.hqrecipe.ui.theme.selectedItem
 import com.haki.hqrecipe.util.Urbanist
 
 @Composable
@@ -56,6 +57,7 @@ fun HomeScreen(
                         Text(
                             modifier = modifier.align(Alignment.Center),
                             text = "There's no related recipe",
+                            color = selectedItem,
                             fontFamily = Urbanist
                         )
                     }

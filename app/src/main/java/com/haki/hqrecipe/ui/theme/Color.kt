@@ -11,6 +11,6 @@ val PurpleGrey40 = Color(0xFF625b71)
 val Pink40 = Color(0x007D5260)
 
 val genBg = Color(0xFFFBF3E6)
-val botBg = Color(0xFFffdab8)
+val botBg = Color(0xFFffe2b8)
 val indicatorColor = Color(0xFFe49858)
 val selectedItem = Color(0xFF544036)

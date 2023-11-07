@@ -29,6 +29,12 @@ class Repository {
         )
     }
 
+    fun getRecipeById(recipeId: Long): RecipeModel {
+        return recipes.first {
+            it.id == recipeId
+        }
+    }
+
     fun updateSavedRecipe(recipeId: Long): Flow<Boolean> {
         val index = recipes.indexOfFirst { it.id == recipeId }
         val result = if (index >= 0) {
@@ -50,6 +56,7 @@ class Repository {
                 }
             }
     }
+
     companion object {
         @Volatile
         private var instance: Repository? = null

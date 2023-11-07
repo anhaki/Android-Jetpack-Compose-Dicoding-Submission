@@ -23,6 +23,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -82,6 +83,8 @@ fun RecipeItem(
             Text(
                 modifier = Modifier
                     .align(Alignment.Center),
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis,
                 fontFamily = Urbanist,
                 fontWeight = FontWeight.Bold,
                 color = genBg,
@@ -91,12 +94,3 @@ fun RecipeItem(
         }
     }
 }
-
-//@Preview
-//@Composable
-//fun RecipeItemPreview() {
-//    RecipeItem(
-//        name = "Nasi Goreng",
-//        photoUrl = "https://www.gstatic.com/devrel-devsite/prod/v3dd25c92d5352c564dee25a968f979b141ded90163a07541d5fdf1326628430d/android/images/rebrand/lockup.svg"
-//    )
-//}
