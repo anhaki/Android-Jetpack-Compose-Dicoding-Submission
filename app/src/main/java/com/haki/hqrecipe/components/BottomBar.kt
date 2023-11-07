@@ -28,8 +28,8 @@ import com.haki.hqrecipe.util.Urbanist
 
 @Composable
 fun BottomBar(
-    navController: NavHostController = rememberNavController(),
     modifier: Modifier = Modifier,
+    navController: NavHostController = rememberNavController(),
 ) {
 
     NavigationBar(
@@ -57,7 +57,7 @@ fun BottomBar(
             ),
         )
 
-        navigationItems.map {item ->
+        navigationItems.map { item ->
             NavigationBarItem(
                 icon = {
                     Icon(

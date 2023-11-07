@@ -11,7 +11,7 @@ import kotlinx.coroutines.launch
 
 class DetailViewModel(
     private val repository: Repository
-): ViewModel() {
+) : ViewModel() {
     private val _resultState: MutableStateFlow<ResultState<RecipeModel>> =
         MutableStateFlow(ResultState.Loading)
     val resultState: StateFlow<ResultState<RecipeModel>>

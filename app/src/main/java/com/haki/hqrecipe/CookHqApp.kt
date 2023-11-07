@@ -1,12 +1,10 @@
 package com.haki.hqrecipe
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
@@ -20,7 +18,6 @@ import com.haki.hqrecipe.screen.detail.DetailScreen
 import com.haki.hqrecipe.screen.home.HomeScreen
 import com.haki.hqrecipe.screen.profile.ProfileScreen
 import com.haki.hqrecipe.screen.saved.SavedScreen
-import com.haki.hqrecipe.ui.theme.genBg
 
 @Composable
 fun CookHqApp(

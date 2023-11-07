@@ -14,7 +14,8 @@ class SavedViewModel(
     private val repository: Repository
 ) : ViewModel() {
     private val _resultState: MutableStateFlow<ResultState<List<RecipeModel>>> = MutableStateFlow(
-        ResultState.Loading)
+        ResultState.Loading
+    )
 
     val resultState: StateFlow<ResultState<List<RecipeModel>>>
         get() = _resultState

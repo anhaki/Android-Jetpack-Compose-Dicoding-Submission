@@ -1,6 +1,6 @@
 package com.haki.hqrecipe.model
 
-data class RecipeModel (
+data class RecipeModel(
     val id: Long,
     val name: String,
     val photo: String,

@@ -1,5 +1,6 @@
 package com.haki.hqrecipe.screen.saved
 
+import android.widget.Toast
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
@@ -8,7 +9,6 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -20,21 +20,22 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.haki.hqrecipe.R
 import com.haki.hqrecipe.ViewModelFactory
-import com.haki.hqrecipe.components.MySearchBar
 import com.haki.hqrecipe.components.RecipeItem
 import com.haki.hqrecipe.data.ResultState
 import com.haki.hqrecipe.di.Injection
 import com.haki.hqrecipe.model.RecipeModel
-import com.haki.hqrecipe.screen.home.HomeViewModel
 import com.haki.hqrecipe.ui.theme.botBg
 import com.haki.hqrecipe.ui.theme.genBg
 import com.haki.hqrecipe.ui.theme.selectedItem
@@ -49,11 +50,13 @@ fun SavedScreen(
     ),
     navigateToDetail: (Long) -> Unit,
 ) {
+    val context = LocalContext.current
+
     Column(modifier = modifier.fillMaxSize()) {
         CenterAlignedTopAppBar(
             title = {
                 Text(
-                    text = "Saved Recipe",
+                    text = stringResource(id = R.string.saved_recipe),
                     color = selectedItem,
                     modifier = Modifier
                         .fillMaxWidth()
@@ -64,32 +67,37 @@ fun SavedScreen(
                     fontFamily = Urbanist
                 )
             },
-            colors = TopAppBarDefaults.topAppBarColors(botBg)
+            colors = TopAppBarDefaults.topAppBarColors(botBg),
+            modifier = Modifier
         )
 
-        Box(modifier = modifier
-            .fillMaxSize()
-            .background(genBg)){
+        Box(
+            modifier = modifier
+                .fillMaxSize()
+                .background(genBg)
+        ) {
             viewModel.resultState.collectAsState(initial = ResultState.Loading).value.let { result ->
                 when (result) {
                     is ResultState.Loading -> {
                         viewModel.getSavedRecipe()
                     }
+
                     is ResultState.Success -> {
-                        if(result.data.isEmpty()){
+                        if (result.data.isEmpty()) {
                             Text(
-                                modifier = modifier.align(Alignment.Center),
-                                text = "There's no saved recipe",
+                                modifier = modifier
+                                    .align(Alignment.Center)
+                                    .testTag("saved_error"),
+                                text = stringResource(id = R.string.error_saved),
                                 fontFamily = Urbanist,
                                 color = selectedItem
                             )
-                        }
-                        else{
+                        } else {
                             SavedContent(
                                 recipes = result.data,
                                 modifier = modifier,
                                 navigateToDetail = navigateToDetail,
-                                onSave = {id ->
+                                onSave = { id ->
                                     viewModel.saveRecipe(recipeId = id)
                                     viewModel.getSavedRecipe()
 
@@ -97,7 +105,14 @@ fun SavedScreen(
                             )
                         }
                     }
-                    is ResultState.Error -> {}
+
+                    is ResultState.Error -> {
+                        Toast.makeText(
+                            context,
+                            stringResource(id = R.string.error),
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
                 }
             }
         }
@@ -115,8 +130,9 @@ fun SavedContent(
     LazyColumn(
         contentPadding = PaddingValues(16.dp),
         verticalArrangement = Arrangement.spacedBy(16.dp),
+        modifier = modifier.testTag("SavedList")
     ) {
-        items(recipes, key = { it.id + 1 }) { data ->
+        items(recipes, key = { it.id }) { data ->
             RecipeItem(
                 photoUrl = data.photo,
                 id = data.id,

@@ -1,7 +1,6 @@
 package com.haki.hqrecipe.screen.detail
 
-import androidx.annotation.DrawableRes
-import androidx.compose.foundation.Image
+import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -27,10 +26,9 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -43,7 +41,6 @@ import com.haki.hqrecipe.R
 import com.haki.hqrecipe.ViewModelFactory
 import com.haki.hqrecipe.data.ResultState
 import com.haki.hqrecipe.di.Injection
-import com.haki.hqrecipe.ui.theme.botBg
 import com.haki.hqrecipe.ui.theme.genBg
 import com.haki.hqrecipe.ui.theme.selectedItem
 import com.haki.hqrecipe.util.Urbanist
@@ -59,11 +56,13 @@ fun DetailScreen(
     ),
     navigateBack: () -> Unit,
 ) {
+    val context = LocalContext.current
     viewModel.resultState.collectAsState(initial = ResultState.Loading).value.let { resulState ->
         when (resulState) {
             is ResultState.Loading -> {
                 viewModel.getRecipeById(recipeId)
             }
+
             is ResultState.Success -> {
                 val data = resulState.data
                 DetailContent(
@@ -75,7 +74,12 @@ fun DetailScreen(
                     onBackClick = navigateBack,
                 )
             }
-            is ResultState.Error -> {}
+
+            is ResultState.Error -> {
+                Toast.makeText(
+                    context, stringResource(id = R.string.error), Toast.LENGTH_SHORT
+                ).show()
+            }
         }
     }
 }
@@ -92,32 +96,30 @@ fun DetailContent(
 
     ) {
     Column(
-        modifier = modifier
-            .fillMaxSize()
+        modifier = modifier.fillMaxSize()
     ) {
-        Box(modifier = modifier
-            .fillMaxHeight(0.33f)
-            .fillMaxWidth()
-            .zIndex(1f)
-        ){
+        Box(
+            modifier = modifier
+                .fillMaxHeight(0.33f)
+                .fillMaxWidth()
+                .zIndex(1f)
+        ) {
             AsyncImage(
                 model = photoUrl,
                 contentDescription = name,
-                modifier = modifier
-                    .fillMaxSize(),
-                contentScale = ContentScale.Crop)
+                modifier = modifier.fillMaxSize(),
+                contentScale = ContentScale.Crop
+            )
 
-            Icon(
-                imageVector = Icons.Default.ArrowBack,
-                contentDescription = "Back"/*stringResource(R.string.back)*/,
+            Icon(imageVector = Icons.Default.ArrowBack,
+                contentDescription = stringResource(R.string.back),
                 modifier = Modifier
                     .padding(16.dp)
                     .clickable { onBackClick() }
                     .clip(CircleShape)
                     .background(selectedItem)
                     .padding(5.dp),
-                tint = genBg
-            )
+                tint = genBg)
 
             ElevatedCard(
                 modifier = modifier
@@ -126,12 +128,11 @@ fun DetailContent(
                     .offset(y = 40.dp)
                     .padding(start = 30.dp, end = 30.dp),
                 colors = CardDefaults.cardColors(selectedItem)
-                ) {
+            ) {
                 Text(
                     text = name,
                     textAlign = TextAlign.Center,
-                    modifier = modifier
-                        .padding(20.dp),
+                    modifier = modifier.padding(20.dp),
                     fontSize = 25.sp,
                     fontFamily = Urbanist,
                     fontWeight = FontWeight.Bold,
@@ -145,21 +146,18 @@ fun DetailContent(
                 .background(genBg)
                 .padding(horizontal = 16.dp)
                 .verticalScroll(rememberScrollState())
-                .padding(top = 50.dp)
-            ,
+                .padding(top = 50.dp),
         ) {
-            detailComponent(section = "Description", value = description)
-            detailComponent(section = "Ingredients", value = ingre)
-            detailComponent(section = "Steps", value = steps)
+            DetailComponent(section = stringResource(id = R.string.desc), value = description)
+            DetailComponent(section = stringResource(id = R.string.ingre), value = ingre)
+            DetailComponent(section = stringResource(id = R.string.steps), value = steps)
         }
     }
 }
 
 @Composable
-fun detailComponent(
-    modifier: Modifier = Modifier,
-    section: String,
-    value: String
+fun DetailComponent(
+    modifier: Modifier = Modifier, section: String, value: String
 ) {
     Text(
         text = section,
@@ -170,9 +168,7 @@ fun detailComponent(
         color = Color.Black
     )
     Divider(
-        color = Color.Black,
-        thickness = 1.dp,
-        modifier = modifier.padding(bottom = 5.dp)
+        color = Color.Black, thickness = 1.dp, modifier = modifier.padding(bottom = 5.dp)
     )
 
     Text(

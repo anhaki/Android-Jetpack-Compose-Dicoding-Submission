@@ -71,6 +71,6 @@ dependencies {
     implementation ("io.coil-kt:coil-compose:2.5.0")
     implementation ("androidx.lifecycle:lifecycle-viewmodel-compose:2.6.2")
 
-    implementation ("com.google.accompanist:accompanist-systemuicontroller:0.27.0")
+    androidTestImplementation ("androidx.navigation:navigation-testing:2.7.5")
 
 }

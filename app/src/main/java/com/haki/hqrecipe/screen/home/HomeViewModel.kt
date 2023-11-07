@@ -1,6 +1,5 @@
 package com.haki.hqrecipe.screen.home
 
-import android.util.Log
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
@@ -17,7 +16,8 @@ class HomeViewModel(
     private val repository: Repository
 ) : ViewModel() {
 
-    private val _resultState: MutableStateFlow<ResultState<List<RecipeModel>>> = MutableStateFlow(ResultState.Loading)
+    private val _resultState: MutableStateFlow<ResultState<List<RecipeModel>>> =
+        MutableStateFlow(ResultState.Loading)
 
     val resultState: StateFlow<ResultState<List<RecipeModel>>>
         get() = _resultState

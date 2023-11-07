@@ -21,7 +21,7 @@ class Repository {
         return flowOf(recipes)
     }
 
-    fun searchRecipes(query: String): Flow<List<RecipeModel>>{
+    fun searchRecipes(query: String): Flow<List<RecipeModel>> {
         return flowOf(
             recipes.filter {
                 it.name.contains(query, ignoreCase = true)
